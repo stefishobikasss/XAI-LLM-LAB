@@ -15,8 +15,10 @@ This project explores the internal decision-making of language models by visuali
 
 XAI-LLM-LAB/
 ├── llama.cpp/ 
+
 |  |──src/
 │    ├──llama-context.cpp # Modified llama.cpp with hooks and tools
+
 ├── logits/
 │ ├── generate_rationales.py # Script to trace and save activations
 │ ├── compare_logits.py # Compare GGUF vs TransformerLens
