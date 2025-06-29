@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAI LLM Lab Report - Stefi Shobika Sukumar</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 40px; color: #333; }
+        h1, h2, h3 { color: #2c3e50; }
+        img { max-width: 100%; height: auto; margin: 20px 0; border: 1px solid #ccc; }
+        .intro, .pt1, .pt2 { margin-bottom: 60px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>24KIDS442 XAI LLM LAB</h1>
+        <h2>Stefi Shobika Sukumar</h2>
+        <p>Understanding how large language models (LLMs) process and reason about text is a major challenge in modern AI research — especially when these models are deployed in black-box settings, where internal decision processes are hidden from users.</p>
+        <p>As part of the XAI LLM Lab Internship, this project focuses on building a lightweight, explainable interface for small, quantized LLMs (≤7B) that can run on CPU devices. The goal is to help users explore how the model processes input prompts, by combining visual neuron activation maps with natural language rationale explanations.</p>
+    </div>
+
+    <div class="pt1">
+        <h3>System Architecture and Methodology</h3>
+        <p>This project is implemented as a two-stage pipeline:</p>
+        <ol>
+            <li><strong>Offline Backend (Computation):</strong> Prompts are executed using quantized GGUF models (TinyLlama Q3_K_M and Phi Q4_K_M) in <code>llama.cpp</code>. A custom-modified decoder caches layer-wise neuron activations into <code>logits_activations.csv</code>.</li>
+            <li><strong>Token Explanation:</strong> The Zephyr model (Mistral-based) is used to generate natural language rationales for each token. These are saved in <code>rationales.jsonl</code>.</li>
+            <li><strong>Streamlit Dashboard:</strong> The app loads precomputed activations and rationales. When the user enters a prompt, it retrieves the cached data and visualizes the token-wise attention using Plotly heatmaps alongside the generated rationales.</li>
+        </ol>
+        <p>This decoupled design allows for CPU-efficient local analysis and avoids the need to re-run inference live inside the Streamlit app.</p>
+
+        <h4>Backend Pipeline (Screenshots)</h4>
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot (209).png" alt="llama.cpp prototyping">
+        <p><em>Loading quantized GGUF models with llama.cpp</em></p>
+
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot 2025-06-29 150927.png" alt="llama.cpp internals">
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot 2025-06-29 151152.png" alt="TinyLlama loaded">
+        <p><em>Quantized TinyLlama and Phi models running in CPU with llama.cpp</em></p>
+
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot 2025-06-29 151715.png" alt="logits_activations.csv">
+        <p><em>Neuron activations cached in logits_activations.csv</em></p>
+
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot 2025-06-29 152044.png" alt="Zephyr rationale generation">
+        <p><em>Zephyr generates token-level rationales for each prompt</em></p>
+    </div>
+
+    <div class="pt2">
+        <h3>Streamlit Visualization Dashboard</h3>
+        <img src="C:/Users/Sophia Sona/Pictures/Screenshots/Screenshot 2025-06-29 152421.png" alt="Streamlit app">
+        <ul>
+            <li>User enters a prompt into the dashboard.</li>
+            <li>The app looks up cached activations and explanations.</li>
+            <li>Plotly is used to render the token-by-layer attention heatmap.</li>
+            <li>Below the heatmap, Zephyr-generated rationales are shown for each token.</li>
+        </ul>
+        <p>This architecture ensures the system remains CPU-friendly, while still offering rich interpretability features for education, debugging, and LLM transparency.</p>
+    </div>
+</body>
+</html>
